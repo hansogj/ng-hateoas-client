@@ -1,0 +1,33 @@
+{
+    "_links": {
+        "self": {
+            "href": "http://localhost:9999/hateoas/api/users"
+        }
+    },
+    "content": [
+        {
+            "id": "bill",
+            "name": "Bill Bruford",
+            "_links": {
+                "self": {
+                    "href": "/api/user/bill"
+                },
+                "all": {
+                    "href": "/api/user/all"
+                }
+            }
+        },
+        {
+            "id": "bob",
+            "name": "Robert Fripp",
+            "_links": {
+                "self": {
+                    "href": "/api/user/bob"
+                },
+                "all": {
+                    "href": "/api/user/all"
+                }
+            }
+        }
+    ]
+}

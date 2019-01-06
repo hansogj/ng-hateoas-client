@@ -1,0 +1,12 @@
+{
+  "id": "bob",
+  "name": "Robert Fripp",
+  "_links": {
+    "self": {
+      "href": "/api/user/bob"
+    },
+    "all": {
+      "href": "/api/user/all"
+    }
+  }
+}

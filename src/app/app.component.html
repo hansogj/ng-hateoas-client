@@ -1,0 +1,20 @@
+<div class="text-center box header">
+    <H2>Logged in user {{(user | async)?.name}} -- <i>{{(user | async)?.id}}</i></H2>
+</div>
+
+<div class="box flex main">
+
+    <div class="col">
+        <h5>Content of bill.json</h5>
+        <pre>{{(bill | async | json)}}</pre>
+    </div>
+
+   <div class="col">
+        <h5>Content of all.json</h5>
+        <pre>{{(all | async | json)}}</pre>
+    </div>
+</div>
+
+<div class="box text-center alert">
+    <p>{{(errorMessage | async)}}</p>
+</div>

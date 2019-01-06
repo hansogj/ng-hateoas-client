@@ -1,0 +1,50 @@
+/* You can add global styles to this file, and also import other style files */
+
+.box {
+        margin: 5px 20%;
+        padding: 20px;
+        border-radius: 5px;
+}
+
+.main {
+    background: #9cf;
+    border: 2px solid #246;   
+    color:#246;
+}
+.header {
+        background: #cfc;
+        border: 2px solid #373;
+        color:#373
+}
+
+.flex {
+    display: flex;
+    justify-content: center
+}
+
+.flex .col {
+    margin-right: 20px
+}
+
+pre {
+    background: #fff;
+    border: solid 2px #999;
+    border-radius: 5px;
+    padding: 10px;
+    color: #333;
+}
+
+
+body {
+    background: #def
+}
+
+.text-center {
+    text-align: center;
+}
+
+.alert {
+    background: #a00;
+    color: #Fcc;
+    border:  solid 2px #500;
+}
