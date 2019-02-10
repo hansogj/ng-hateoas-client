@@ -1,6 +1,6 @@
 {
     "name": "ng-hateoas-client",
-    "version": "2.1.0",
+    "version": "2.6.8",
     "publishConfig": {
         "registry": "http://registry.npmjs.org/"
     },
