@@ -46,7 +46,7 @@ This client use [semver]( http://semver.org/)
 
 ```bash
 $ npm version [semver-version]
-$ git tag -l "vX.Y.Z"
+$ git tag -a "vX.Y.Z"
 $ git push --tags origin master
 ```
 
