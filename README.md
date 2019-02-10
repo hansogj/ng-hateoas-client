@@ -45,12 +45,13 @@ This client use [semver]( http://semver.org/)
 
 
 ```bash
-$npm version [semver-version]
+$ npm version [semver-version]
+$ git tag -l "vX.Y.Z"
 $ git push --tags origin master
 ```
 
 ```bash
-$ npm prepublish
+$ npm run prepublish
 // Confirm that there is a  _ng-hateoas-client-*.*.*.tgz_-file ,  with correct  version number
 $ cd  dist/ng-hateoas-client 
 npm publish 
