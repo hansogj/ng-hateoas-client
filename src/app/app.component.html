@@ -1,17 +1,17 @@
 <div class="text-center box header">
-    <H2>Logged in user {{(user | async)?.name}} -- <i>{{(user | async)?.id}}</i></H2>
+    <H2>Logged in as {{(user | async)?.name}} (id:  <i>{{(user | async)?.id}}</i>)</H2>
 </div>
 
 <div class="box flex main">
 
     <div class="col">
-        <h5>Content of bill.json</h5>
-        <pre>{{(bill | async | json)}}</pre>
+        <h5>Content of bill.json as LinkResponse&lt;IUser&gt;</h5>
+        <pre>{{(linkResponse| async )}}</pre>
     </div>
 
-   <div class="col">
-        <h5>Content of all.json</h5>
-        <pre>{{(all | async | json)}}</pre>
+    <div class=" col">
+        <h5>User  as DomainObject&lt;User&gt;</h5>
+        <pre *ngFor=" let a of(all | async) ">{{ a }}</pre>
     </div>
 </div>
 

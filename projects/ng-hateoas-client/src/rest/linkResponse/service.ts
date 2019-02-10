@@ -66,17 +66,14 @@ export class LinkResponseService {
 
     // @deplrecated
     bygg<T>(responseJson: Object): LinkResponse<T> {
-       return this.build(responseJson);
-    } 
+        return this.build(responseJson);
+    }
 
-     build<T>(responseJson: Object): LinkResponse<T> {
+    build<T>(responseJson: Object): LinkResponse<T> {
         const value: T = Object.assign({}, responseJson) as T;
         delete value['_links'];
         return new LinkResponse<T>(this.genererLinker(responseJson['_links']), value);
     }
-
-
-
 }
 
 export class LinkResponse<T> {
@@ -85,4 +82,18 @@ export class LinkResponse<T> {
         return this.value[selector];
     }
 
+    toString() {
+        return JSON.stringify(
+            {
+                links: this.links.entrySeq()
+                    .map(([key, val]: any[]) => {
+                        const res = {};
+                        res[key] = val.url;
+                        return res;
+                    }).toArray(),
+                value: this.value,
+            },
+            null,
+            2);
+    }
 }

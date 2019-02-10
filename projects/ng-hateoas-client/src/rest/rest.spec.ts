@@ -5,7 +5,9 @@ import { Observable } from 'rxjs';
 import { userLinksMock, userMock, testProviders } from './helpers/';
 import { User } from './helpers/user';
 import { LinkResponse, LinkResponseService } from './linkResponse/service';
- 
+
+const lastOf = (spy: jasmine.Spy) => spy.calls.mostRecent().args;
+
 describe('RestService', () => {
     let linkResponseService: LinkResponseService = null;
     let http: HttpClient;
@@ -20,7 +22,7 @@ describe('RestService', () => {
         http = getTestBed().get(HttpClient);
     });
 
-    fdescribe('model', () => {
+    describe('model', () => {
         let user: User;
 
         beforeEach(() => {
@@ -51,7 +53,7 @@ describe('RestService', () => {
             describe('next', () => {
                 beforeEach(() => user.next());
                 it('http.get is called', () => expect(httpGet).toHaveBeenCalledTimes(1));
-                it('http.get is called with excpected arguments', () => expect(httpGet.calls.mostRecent().args)
+                it('http.get is called with excpected arguments', () => expect(lastOf(httpGet))
                     .toEqual([userMock['_links'].next.href]));
             });
 
@@ -59,21 +61,23 @@ describe('RestService', () => {
                 const args = { data: '', length: 22 };
                 beforeEach(() => user.post(args));
                 it('http.post is called', () => expect(httpPost).toHaveBeenCalledTimes(1));
-                it('http.post is called with excpected arguments', () => expect(httpPost.calls.mostRecent().args)
+                it('http.post is called with excpected arguments', () => expect(lastOf(httpPost))
                     .toEqual([userMock['_links'].self.href, args]));
             });
 
             describe('delete', () => {
                 beforeEach(() => user.delete());
                 it('http.delete is called', () => expect(httpDel).toHaveBeenCalledTimes(1));
-                it('http.delete is called with excpected arguments', () => expect(httpDel.calls.mostRecent().args)
+                it('http.delete is called with excpected arguments', () => expect(lastOf(httpDel))
                     .toEqual([userMock['_links'].self.href]));
             });
             describe('put', () => {
                 beforeEach(() => user.put(user));
                 it('http.put is called', () => expect(httpPut).toHaveBeenCalledTimes(1));
-                it('http.put is called with excpected arguments', () => expect(httpPut.calls.mostRecent().args)
-                    .toEqual([userMock['_links'].self.href, { id: user.id, name: user.name } as User]));
+                it('http.put is called with excpected arguments', () => {
+                    expect(lastOf(httpPut)[0]).toEqual(userMock['_links'].self.href);
+                    expect(lastOf(httpPut)[1]).toEqual(jasmine.objectContaining({ id: user.id, name: user.name }));
+                });
             });
         });
     });

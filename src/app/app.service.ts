@@ -1,42 +1,53 @@
 import { Injectable } from '@angular/core';
 import { List } from 'immutable';
-import { Href, HttpClient, IContent, Link, LinkResponse } from 'projects/ng-hateoas-client/src/rest';
+import { Href, HttpClient, IContent, Link, LinkResponse, LinkResponseService, unRest } from 'projects/ng-hateoas-client/src/rest';
 import { User, IUser } from 'projects/ng-hateoas-client/src/rest/helpers/user';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { flatMap, map } from 'rxjs/operators';
 
 @Injectable()
 export class AppService {
 
-    public bill: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-    public all: BehaviorSubject<any> = new BehaviorSubject<any>(List([]));
-    public user: BehaviorSubject<User> = new BehaviorSubject<User>(null);
+    private linkResponseBS: BehaviorSubject<LinkResponse<IUser>> = new BehaviorSubject<LinkResponse<IUser>>(undefined);
+    private allBS: BehaviorSubject<List<User>> = new BehaviorSubject<List<User>>(List([]));
+    private userBS: BehaviorSubject<User> = new BehaviorSubject<User>(undefined);
 
-    constructor(private http: HttpClient) {
-
+    constructor(private http: HttpClient, private linkResponseService: LinkResponseService) {
         this.fetchUsers();
         this.fetchNonExcistingUser();
     }
 
-    fetchUsers() {
+    get linkResponse(): Observable<LinkResponse<IUser>> {
+        return this.linkResponseBS.asObservable();
+    }
+
+    get all(): Observable<List<User>> {
+        return this.allBS.asObservable();
+    }
+
+    get user(): Observable<User> {
+        return this.userBS.asObservable();
+    }
+
+    private fetchUsers(): void {
         const meLink: Link = new Link(this.http, { href: `/api/user/bill` } as Href);
         meLink.get()
-            .pipe(flatMap((json: LinkResponse<IUser>) => {
-                this.bill.next(json.value);
-                const user: User = new User(json.links, json.value);
-                this.user.next(user);
+            .pipe(flatMap((response: LinkResponse<IUser>) => {
+                this.linkResponseBS.next(response);
+                const user: User = new User(response.links, response.value);
+                this.userBS.next(user);
                 return user.get('all'); // see mock/user/bill.json
             }))
             .pipe(map((allUsers: LinkResponse<IContent<IUser[]>>) => {
-                this.all.next(allUsers.value);
                 return List(allUsers.value.content
-                    .map((bru: IUser) => new User(null, bru)));
+                    .map(bru => this.linkResponseService.build(bru))
+                    .map((bru: LinkResponse<IUser>) => new User(bru.links, bru.value)));
             }))
-            .subscribe((userListe: List<User>) => this.all.next(userListe));
+            .subscribe((userListe: List<User>) => this.allBS.next(userListe));
 
     }
 
-    fetchNonExcistingUser() {
+    private fetchNonExcistingUser() {
         const failngLink: Link = new Link(this.http, { href: `/api/not/excisting` } as Href);
         failngLink.get().subscribe((response) => { console.log(response); }, (error) => { console.log(error); });
     }

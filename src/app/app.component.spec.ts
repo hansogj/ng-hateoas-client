@@ -17,8 +17,8 @@ describe('AppComponent', () => {
         }).compileComponents();
     }));
     beforeEach(() => service = getTestBed().get(AppService));
-
-    beforeEach(() => service.user.next(new User(null, { name: 'Bon Scott', id: 'BOS001' } as any)));
+    // @ts-ignore
+    beforeEach(() => service.userBS.next(new User(null, { name: 'Bon Scott', id: 'BOS001' } as any)));
 
     it('should create the app', async(() => {
         const fixture = TestBed.createComponent(AppComponent);

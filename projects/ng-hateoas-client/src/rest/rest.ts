@@ -5,7 +5,12 @@ import { Link, LinkResponse } from './linkResponse/service';
 export interface RestInterface<T> {
     links: Map<string, Link>;
     next(): Observable<LinkResponse<T>>;
+    prev(): Observable<LinkResponse<T>>;
     get(key: string): Observable<LinkResponse<T>>;
+    post(data: Object): Observable<LinkResponse<T>>;
+    put(data: Object): Observable<LinkResponse<T>>;
+    delete(): Observable<Object>;
+    patch(data: any): Observable<LinkResponse<T>>;
 }
 
 export const unRest = function (data: Object): Object {
@@ -23,6 +28,10 @@ export class Rest<T> implements RestInterface<T> {
 
     next(): Observable<LinkResponse<any>> {
         return this.get('next');
+    }
+
+    prev(): Observable<LinkResponse<any>> {
+        return this.get('prev');
     }
 
     get(key: string): Observable<LinkResponse<any>> {
@@ -51,6 +60,6 @@ export class DomainObject<T> extends Rest<T> {
     constructor(links: Map<string, Link>, jsn: Object = {}) {
         super(links);
         Object.keys(jsn).forEach(key => this[key] = jsn[key]);
+        this.toString = () => JSON.stringify(jsn, null, 2);
     }
-
 }
