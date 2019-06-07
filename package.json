@@ -22,7 +22,8 @@
         "test:client:debug": "npm run test:client:watch --  --browsers=Chrome ",
         "version:patch": "npm version patch && cd projects/ng-hateoas-client && npm version patch --no-git && git commit -a --amend --no-edit  ",
         "version:minor": "npm version minor && cd projects/ng-hateoas-client && npm version minor --no-git && git commit -a --amend --no-edit  ",
-        "version:major": "npm version major && cd projects/ng-hateoas-client && npm version major --no-git && git commit -a --amend --no-edit  "
+        "version:major": "npm version major && cd projects/ng-hateoas-client && npm version major --no-git && git commit -a --amend --no-edit  ",
+        "postversion": "git push && git push --tags"
     },
     "private": true,
     "dependencies": {
